@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+ {% block stylesheets %}
+     {{ parent() }}
+     {{ encore_entry_link_tags('products') }}
+ {% endblock %}
+
+{% block body %}
+    <div id="app">
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        {% if currentCategoryId is defined %}
+        window.currentCategoryId = '{{ currentCategoryId|e('js') }}';
+        {% else %}
+        window.currentCategoryId = null;
+        {% endif %}
+    </script>
+    {{ encore_entry_script_tags('products') }}
+{% endblock %}

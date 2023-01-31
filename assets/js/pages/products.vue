@@ -5,11 +5,15 @@
                 <sidebar-component
                     :collapse="sidebarCollapsed"
                     :current-category-id="currentCategoryId"
+                    :categories="categories"
                     @toggle-collapsed="toggleCollapsed"
                 />
             </aside>
             <div :class="contentClass">
-                <catalog-component  :current-category-id="currentCategoryId"/>
+                <catalog-component
+                    :current-category-id="currentCategoryId"
+                    :categories="categories"
+                />
             </div>
         </div>
     </div>
@@ -19,6 +23,7 @@
 import CatalogComponent from '../components/catalog';
 import SidebarComponent from '../components/sidebar';
 import { getCurrentCategoryId } from '../services/page-context';
+import { fetchCategories } from '../services/categories-services';
 
 export default {
     name: 'Products',
@@ -29,6 +34,8 @@ export default {
     data() {
         return {
             sidebarCollapsed: false,
+            categories: [],
+            currentCategoryId: getCurrentCategoryId(),
         };
     },
     computed: {
@@ -38,9 +45,11 @@ export default {
         contentClass() {
             return this.sidebarCollapsed ? 'col-xs-12 col-11' : 'col-xs-12 col-9';
         },
-        currentCategoryId() {
-            return getCurrentCategoryId();
-        },
+    },
+    async created() {
+        const response = await fetchCategories();
+
+        this.categories = response.data['hydra:member'];
     },
     methods: {
         toggleCollapsed() {

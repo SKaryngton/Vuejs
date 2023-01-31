@@ -48,7 +48,7 @@
 
 <script>
 
-import { fetchCategories } from '../services/categories-services';
+
 
 export default {
     name: 'Sidebar',
@@ -61,23 +61,17 @@ export default {
             type: String,
             default: null,
         },
+        categories: {
+            type: Array,
+            required: true,
+        },
     },
-    data() {
-        return {
 
-            categories: [],
-        };
-    },
     computed: {
         componentClass() {
             return [this.$style.sidebar, 'p-3', 'mb-5'];
         },
 
-    },
-    async created() {
-        const response = await fetchCategories();
-
-        this.categories = response.data['hydra:member'];
     },
 
 };
